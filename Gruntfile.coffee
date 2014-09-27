@@ -1,9 +1,9 @@
 #!
-# egemswatch
-# Boostrap theme based on Paper by Bootswatch.
-# @version 3.2.0 - 2014-09-22
-# @link http://egemsoft.github.io/egemswatch
-# @license MIT, http://opensource.org/licenses/MIT
+# kamuran
+# Random suggestion helper.
+# Unnecessary at all.
+# @license MIT
+# @author İsmail Demirbilek
 #
 
 module.exports = (grunt) ->
