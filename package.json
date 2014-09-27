@@ -13,6 +13,9 @@
     "kamuran",
     "egemsoft"
   ],
+  "bin": {
+    "kamuran": "./bin/kamuran"
+  },
   "engines": {
     "node": ">=0.10.0"
   },
@@ -23,8 +26,5 @@
   },
   "dependencies": {
     "request": "^2.44.0"
-  },
-  "bin": {
-    "kamuran": "./bin/kamuran"
-  },
+  }
 }
