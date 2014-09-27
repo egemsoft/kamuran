@@ -1,0 +1,55 @@
+#!/usr/bin/env coffee
+
+#!
+# kamuran
+# Random suggestion helper.
+# Unnecessary at all.
+# @license MIT
+# @author İsmail Demirbilek
+#
+
+places = require './places.json'
+places.lunch = places.lunch.concat(places.common.concat 'randfix')
+places.dinner = places.dinner.concat(places.common.concat 'randfix')
+
+suggestParams = [
+	'suggest'
+	'nereye gidelim'
+	'nereye gidelim?'
+	'nereye gideyim'
+	'nereye gideyim?'
+	'ne dersin'
+	'ne dersin?'
+]
+
+# return random responses
+suggestResponse = (place) ->
+	responses =[
+		"#{ place } hiç fena olmaz."
+		"#{ place } nasıl fikir?"
+		"Ne dersin, #{ place } uyar mı?"
+		"#{ place } iyidir #{ do place.toLowerCase }"
+		"Neden #{ place } olmasın?"
+	]
+	responses[parseInt Math.random()*responses.length]
+
+unknownResponse = ->
+	console.log 'Her şeyi bilmiyorum maalesef.'
+
+# suggest a random place
+suggest = ->
+	date = new Date()
+	type = if date.getHours() < 14 then 'lunch' else 'dinner'
+	console.log suggestResponse places[type][parseInt Math.random() * (places[type].length - 1)]
+
+# understand the parameters
+understand = ->
+	console.log 'Efendim?' if process.argv.length is 2
+	if process.argv.length is 3 and suggestParams.indexOf process.argv[2] isnt -1
+		return do suggest
+	else if process.argv.length is 4 and suggestParams.indexOf(process.argv[2] + ' ' + process.argv[3]) isnt -1
+	  	return do suggest
+	do unknownResponse
+
+# unchain kamuran
+do understand
