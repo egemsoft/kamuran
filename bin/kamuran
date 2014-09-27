@@ -9,8 +9,8 @@ request.get('https://raw.githubusercontent.com/egemsoft/kamuran/master/places.js
   if (!error && response.statusCode === 200) {
     places = JSON.parse(body);
   }
-  places.lunch = places.lunch.concat(places.common.concat(['randfix']));
-  places.dinner = places.dinner.concat(places.common.concat(['randfix']));
+  places.lunch = places.common.concat(places.lunch);
+  places.dinner = places.common.concat(places.dinner);
   return understand();
 });
 
@@ -18,7 +18,7 @@ suggestParams = ['suggest', 'nereye gidelim', 'nereye gidelim?', 'nereye gideyim
 
 suggestResponse = function(place) {
   var responses;
-  responses = ["" + place + " hiç fena olmaz.", "" + place + " nasıl fikir?", "Ne dersin, " + place + " uyar mı?", "" + place + " iyidir " + (place.toLowerCase()), "Neden " + place + " olmasın?"].concat(['randfix']);
+  responses = ["" + place + " hiç fena olmaz.", "" + place + " nasıl fikir?", "Ne dersin, " + place + " uyar mı?", "" + place + " iyidir " + (place.toLowerCase()), "Neden " + place + " olmasın?"];
   return responses[Math.floor(Math.random() * responses.length)];
 };
 

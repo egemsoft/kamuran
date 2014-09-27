@@ -13,9 +13,10 @@ places = require '../places.json'
 request.get 'https://raw.githubusercontent.com/egemsoft/kamuran/master/places.json', (error, response, body) ->
 	if !error and response.statusCode is 200
   	places = JSON.parse body 
-  places.lunch = places.lunch.concat(places.common.concat ['randfix'])
-	places.dinner = places.dinner.concat(places.common.concat ['randfix'])
-	
+
+  places.lunch = places.common.concat places.lunch
+	places.dinner = places.common.concat places.dinner
+
 	# unchain kamuran
 	do understand
 
@@ -37,7 +38,7 @@ suggestResponse = (place) ->
 		"Ne dersin, #{ place } uyar mı?"
 		"#{ place } iyidir #{ do place.toLowerCase }"
 		"Neden #{ place } olmasın?"
-	].concat(['randfix'])
+	]
 	responses[Math.floor Math.random()*responses.length]
 
 unknownResponse = ->
