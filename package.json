@@ -1,6 +1,14 @@
 {
   "name": "kamuran",
   "version": "0.0.1",
+  "description": "Random suggestion helper, unnecessary at all.",
+  "author": "İsmail Demirbilek",
+  "homepage": "http://egemsoft.github.io/kamuran",
+  "license": "MIT, http://opensource.org/licenses/MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/egemsoft/kamuran.git"
+  },
   "dependencies": {
     "coffee-script": "^1.8.0"
   },
