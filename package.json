@@ -1,6 +1,6 @@
 {
   "name": "kamuran",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Random suggestion helper, unnecessary at all.",
   "author": "İsmail Demirbilek",
   "homepage": "http://github.com/efemsoft/kamuran",
@@ -9,6 +9,10 @@
     "type": "git",
     "url": "git://github.com/egemsoft/kamuran.git"
   },
+  "tags": [
+    "kamuran",
+    "egemsoft"
+  ],
   "engines": {
     "node": ">=0.10.0"
   },
@@ -19,5 +23,8 @@
   },
   "dependencies": {
     "request": "^2.44.0"
-  }
+  },
+  "bin": {
+    "kamuran": "./bin/kamuran"
+  },
 }
