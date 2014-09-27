@@ -9,10 +9,15 @@
     "type": "git",
     "url": "git://github.com/egemsoft/kamuran.git"
   },
-  "dependencies": {
-    "coffee-script": "^1.8.0"
-  },
   "engines": {
     "node": ">=0.10.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-chmod": "^1.0.3",
+    "grunt-contrib-coffee": "^0.11.1"
+  },
+  "dependencies": {
+    "request": "^2.44.0"
   }
 }
