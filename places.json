@@ -3,7 +3,13 @@
 		"Dürümcü Memo",
 		"Kasap Döner",
 		"Capitol",
-		"Patso"
+		"Cipso-Patso",
+		"Livan",
+		"Uzman",
+		"Dönerci Ali",
+		"Bizim Köfte",
+		"HD İskender",
+		
 	],
 	
 	"lunch": [
@@ -15,6 +21,15 @@
 	
 	"dinner": [
 		"Ekol",
-		"Çiğ Köfteci Ömer Usta"
+		"Çiğ Köfteci Ömer Usta",
+		"Balıkçıdayım"
+	],
+	"extras" : [
+		"Ekol Künefe",
+		"Ganache",
+		"Starbucks",
+		"Emiroğlu",
+		"Hacı Bekir Künc",
+		"Aslı börek"
 	]
 }
