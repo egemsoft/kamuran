@@ -31,9 +31,10 @@ suggestResponse = (place) ->
   responses[Math.floor Math.random()*responses.length]
 
 # suggest a random place
-suggest = ->
-  date = new Date()
-  type = if date.getHours() < 14 then 'lunch' else 'dinner'
+suggest = (type) ->
+  if type is undefined or places[type] is undefined
+    date = new Date()
+    type = if date.getHours() < 14 then 'lunch' else 'dinner'
   console.log suggestResponse places[type][Math.floor Math.random() * (places[type].length)]
 
 goygoy = ->
@@ -82,6 +83,10 @@ options = [{
     type: 'bool'
     help: 'Ask kamuran to suggest a place.'
   }, {
+    names: ['type', 't']
+    type: 'string'
+    help: 'Suggestion type. Can be lunch, dinner or dessert.'
+  }, {
     names: ['help', 'h']
     type: 'bool'
     help: 'Help.'
@@ -102,7 +107,7 @@ if opts.version
     "#{pkg.description}\n"
 
 else if opts.suggest
-  do suggest
+  suggest opts.type
 
 else if opts.question
   question = opts.question
@@ -113,10 +118,10 @@ else if opts.question
   answers.forEach (answer) ->
     if answer.questions and typeof answer.questions is 'object' and answer.questions.indexOf(question) > -1
       found = true
-      do answer.answer
+      do answer.answer opts.type
     else if answer.question and typeof answer.question is 'string' and answer.question is question
       found = true
-      do answer.answer
+      do answer.answer opts.type
   if found is false
     do unknownResponse
 

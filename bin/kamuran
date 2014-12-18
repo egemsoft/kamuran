@@ -23,10 +23,12 @@ suggestResponse = function(place) {
   return responses[Math.floor(Math.random() * responses.length)];
 };
 
-suggest = function() {
-  var date, type;
-  date = new Date();
-  type = date.getHours() < 14 ? 'lunch' : 'dinner';
+suggest = function(type) {
+  var date;
+  if (type === void 0 || places[type] === void 0) {
+    date = new Date();
+    type = date.getHours() < 14 ? 'lunch' : 'dinner';
+  }
   return console.log(suggestResponse(places[type][Math.floor(Math.random() * places[type].length)]));
 };
 
@@ -68,6 +70,10 @@ options = [
     type: 'bool',
     help: 'Ask kamuran to suggest a place.'
   }, {
+    names: ['type', 't'],
+    type: 'string',
+    help: 'Suggestion type. Can be lunch, dinner or dessert.'
+  }, {
     names: ['help', 'h'],
     type: 'bool',
     help: 'Help.'
@@ -89,7 +95,7 @@ try {
 if (opts.version) {
   console.log(" " + pkg.name + " - v" + pkg.version + "\n", "by " + pkg.author + "\n", "" + pkg.description + "\n");
 } else if (opts.suggest) {
-  suggest();
+  suggest(opts.type);
 } else if (opts.question) {
   question = opts.question;
   found = false;
@@ -99,10 +105,10 @@ if (opts.version) {
   answers.forEach(function(answer) {
     if (answer.questions && typeof answer.questions === 'object' && answer.questions.indexOf(question) > -1) {
       found = true;
-      return answer.answer();
+      return answer.answer(opts.type)();
     } else if (answer.question && typeof answer.question === 'string' && answer.question === question) {
       found = true;
-      return answer.answer();
+      return answer.answer(opts.type)();
     }
   });
   if (found === false) {
