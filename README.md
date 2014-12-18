@@ -11,19 +11,18 @@ Random suggestion helper, unnecessary at all.
 
 ##Usage
 
+Suggest an appropriate place based on time:
+
 ```bash
- $ kamuran nereye gidelim?
+ $ kamuran -s
 ```
 
-There are a few alias parameters for suggestion. They are:
+Suggest a place based on type:
+```bash
+ $ kamuran -s --type lunch
 ```
-[
-	'suggest'
-	'nereye gidelim'
-	'nereye gidelim?'
-	'nereye gideyim'
-	'nereye gideyim?'
-	'ne dersin'
-	'ne dersin?'
-]
+
+Ask a question (also supports type):
+```bash
+ $ kamuran -q "nereye gidelim?"
 ```
