@@ -8,7 +8,8 @@
 		"Uzman",
 		"Dönerci Ali",
 		"Bizim Köfte",
-		"HD İskender"
+		"HD İskender",
+		"Aslı börek"
 	],
 	
 	"lunch": [
@@ -24,12 +25,12 @@
 		"Çiğ Köfteci Ömer Usta",
 		"Balıkçıdayım"
 	],
-	"extras" : [
+	
+	"dessert" : [
 		"Ekol Künefe",
 		"Ganache",
 		"Starbucks",
 		"Emiroğlu",
-		"Hacı Bekir Künc",
-		"Aslı börek"
+		"Hacı Bekir Künc"
 	]
 }
