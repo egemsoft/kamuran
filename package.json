@@ -25,6 +25,7 @@
     "grunt-contrib-coffee": "^0.11.1"
   },
   "dependencies": {
+    "dashdash": "^1.7.1",
     "request": "^2.44.0"
   }
 }
