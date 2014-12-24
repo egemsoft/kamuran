@@ -1,122 +1,171 @@
 #!/usr/bin/env node
-var answers, dashdash, e, found, goygoy, help, options, opts, parser, pkg, places, question, request, suggest, suggestResponse, unknownResponse;
-
-request = require('request');
-
-dashdash = require('dashdash');
-
-pkg = require('../package.json');
-
-places = require('../places.json');
-
-request.get('https://raw.githubusercontent.com/egemsoft/kamuran/master/places.json', function(error, response, body) {
-  if (!error && response.statusCode === 200) {
-    places = JSON.parse(body);
-  }
-  places.lunch = places.common.concat(places.lunch);
-  return places.dinner = places.common.concat(places.dinner);
-});
-
-suggestResponse = function(place) {
-  var responses;
-  responses = ["" + place + " hiç fena olmaz.", "" + place + " nasıl fikir?", "Ne dersin, " + place + " uyar mı?", "" + place + " iyidir " + (place.toLowerCase()), "Neden " + place + " olmasın?"];
-  return responses[Math.floor(Math.random() * responses.length)];
-};
-
-suggest = function(type) {
-  var date;
-  if (type === void 0 || places[type] === void 0) {
-    date = new Date();
-    type = date.getHours() < 14 ? 'lunch' : 'dinner';
-  }
-  return console.log(suggestResponse(places[type][Math.floor(Math.random() * places[type].length)]));
-};
-
-goygoy = function() {
-  return console.log('İyidir hacı, aynı bildiğin gibi.');
-};
-
-unknownResponse = function() {
-  console.log('Her şeyi bilmiyorum maalesef.');
-  return {
-    responses: {
-      suggest: suggest,
-      goygoy: goygoy
+(function() {
+  var answers, colors, dashdash, fireUp, fs, goygoy, mkDotDir, options, pkg, places, pwuid, request, suggest, suggestResponse, unknownResponse, updatePlaces;
+  request = require('request');
+  dashdash = require('dashdash');
+  fs = require('fs');
+  colors = require('colors');
+  pwuid = require('pwuid');
+  pkg = require('../package.json');
+  mkDotDir = function(callback) {
+    var e;
+    try {
+      return fs.mkdir("" + (pwuid().dir) + "/.kamuran", '0777', function(err) {
+        if (err) {
+          throw new Error('Home directory is not writable.');
+        }
+        return callback();
+      });
+    } catch (_error) {
+      e = _error;
+      return console.error('kamuran: %s', e.stack);
     }
   };
-};
-
-answers = [
-  {
-    answer: suggest,
-    questions: ['suggest', 'nereye gidelim', 'nereye gidelim?', 'nereye gideyim', 'nereye gideyim?', 'ne dersin', 'ne dersin?']
-  }, {
-    answer: goygoy,
-    questions: ['ne yaptın', 'ne yaptın?']
-  }
-];
-
-options = [
-  {
-    names: ['version', 'v'],
-    type: 'bool',
-    help: 'Print kamuran version, some shameless self promotion and exit.'
-  }, {
-    names: ['question', 'q'],
-    type: 'string',
-    help: 'Ask question to kamuran. Such as: "nereye gidelim?"'
-  }, {
-    names: ['suggest', 's'],
-    type: 'bool',
-    help: 'Ask kamuran to suggest a place.'
-  }, {
-    names: ['type', 't'],
-    type: 'string',
-    help: 'Suggestion type. Can be lunch, dinner or dessert.'
-  }, {
-    names: ['help', 'h'],
-    type: 'bool',
-    help: 'Help.'
-  }
-];
-
-parser = dashdash.createParser({
-  options: options
-});
-
-try {
-  opts = parser.parse(process.argv);
-} catch (_error) {
-  e = _error;
-  console.error('kamuran: error: %s', e.message);
-  process.exit(1);
-}
-
-if (opts.version) {
-  console.log(" " + pkg.name + " - v" + pkg.version + "\n", "by " + pkg.author + "\n", "" + pkg.description + "\n");
-} else if (opts.suggest) {
-  suggest(opts.type);
-} else if (opts.question) {
-  question = opts.question;
-  found = false;
-  if (opts._args.length > 0) {
-    question += ' ' + opts._args.join(' ');
-  }
-  answers.forEach(function(answer) {
-    if (answer.questions && typeof answer.questions === 'object' && answer.questions.indexOf(question) > -1) {
-      found = true;
-      return answer.answer(opts.type);
-    } else if (answer.question && typeof answer.question === 'string' && answer.question === question) {
-      found = true;
-      return answer.answer(opts.type);
+  updatePlaces = function(callback) {
+    var e;
+    try {
+      return fs.exists("" + (pwuid().dir) + "/.kamuran", function(exists) {
+        if (!exists) {
+          return mkDotDir(function() {
+            return updatePlaces(callback);
+          });
+        } else {
+          console.log('Updating places...'.yellow);
+          return request.get('https://raw.githubusercontent.com/egemsoft/kamuran/master/places.json', function(error, response, body) {
+            if (!error && response.statusCode === 200) {
+              return fs.writeFile("" + (pwuid().dir) + "/.kamuran/places.json", body, function(err) {
+                if (err) {
+                  throw new Error('Places file is not writable.');
+                }
+                console.log('Places are updated successfully from github repo egemsoft/kamuran.'.green);
+                if (callback != null) {
+                  return callback();
+                }
+              });
+            } else {
+              if (error) {
+                throw new Error('Could not connect to github.');
+              }
+            }
+          });
+        }
+      });
+    } catch (_error) {
+      e = _error;
+      return console.error('kamuran: %s', e.stack);
     }
-  });
-  if (found === false) {
-    unknownResponse();
+  };
+  suggestResponse = function(place) {
+    var responses;
+    responses = ["" + place + " hiç fena olmaz.", "" + place + " nasıl fikir?", "Ne dersin, " + place + " uyar mı?", "" + place + " iyidir " + (place.toLowerCase()), "Neden " + place + " olmasın?"];
+    return responses[Math.floor(Math.random() * responses.length)];
+  };
+  suggest = function(type) {
+    var date;
+    if (type === void 0 || places[type] === void 0) {
+      date = new Date();
+      type = date.getHours() < 14 ? 'lunch' : 'dinner';
+    }
+    return console.log(suggestResponse(places[type][Math.floor(Math.random() * places[type].length)]));
+  };
+  goygoy = function() {
+    return console.log('İyidir hacı, aynı bildiğin gibi.');
+  };
+  unknownResponse = function() {
+    console.log('Her şeyi bilmiyorum maalesef.');
+    return {
+      responses: {
+        suggest: suggest,
+        goygoy: goygoy
+      }
+    };
+  };
+  answers = [
+    {
+      answer: suggest,
+      questions: ['suggest', 'nereye gidelim', 'nereye gidelim?', 'nereye gideyim', 'nereye gideyim?', 'ne dersin', 'ne dersin?']
+    }, {
+      answer: goygoy,
+      questions: ['ne yaptın', 'ne yaptın?']
+    }
+  ];
+  options = [
+    {
+      names: ['version', 'v'],
+      type: 'bool',
+      help: 'Print kamuran version, some shameless self promotion and exit.'
+    }, {
+      names: ['question', 'q'],
+      type: 'string',
+      help: 'Ask question to kamuran. Such as: "nereye gidelim?"'
+    }, {
+      names: ['suggest', 's'],
+      type: 'bool',
+      help: 'Ask kamuran to suggest a place.'
+    }, {
+      names: ['type', 't'],
+      type: 'string',
+      help: 'Suggestion type. Can be lunch, dinner or dessert.'
+    }, {
+      names: ['update'],
+      type: 'bool',
+      help: 'Update places.'
+    }, {
+      names: ['help', 'h'],
+      type: 'bool',
+      help: 'Help.'
+    }
+  ];
+  fireUp = function() {
+    var e, found, help, opts, parser, question;
+    try {
+      parser = dashdash.createParser({
+        options: options
+      });
+      opts = parser.parse(process.argv);
+    } catch (_error) {
+      e = _error;
+      console.error('kamuran: %s', e.stack);
+      process.exit(1);
+    }
+    if (opts.version) {
+      return console.log(" " + pkg.name + " - v" + pkg.version + "\n", "by " + pkg.author + "\n", "" + pkg.description + "\n");
+    } else if (opts.suggest) {
+      return suggest(opts.type);
+    } else if (opts.question) {
+      question = opts.question;
+      found = false;
+      if (opts._args.length > 0) {
+        question += ' ' + opts._args.join(' ');
+      }
+      answers.forEach(function(answer) {
+        if (answer.questions && typeof answer.questions === 'object' && answer.questions.indexOf(question) > -1) {
+          found = true;
+          return answer.answer(opts.type);
+        } else if (answer.question && typeof answer.question === 'string' && answer.question === question) {
+          found = true;
+          return answer.answer(opts.type);
+        }
+      });
+      if (found === false) {
+        return unknownResponse();
+      }
+    } else if (opts.update) {
+      return updatePlaces();
+    } else {
+      help = parser.help({
+        helpincludeEnv: true
+      }).trimRight();
+      return console.log('usage: kamuran [OPTIONS]\n', 'options:\n', help);
+    }
+  };
+  try {
+    places = require("" + (pwuid().dir) + "/.kamuran/places.json");
+    places.lunch = places.lunch.concat(places.common);
+    places.dinner = places.dinner.concat(places.common);
+    return fireUp();
+  } catch (_error) {
+    console.log('Places file is not present will fetch it.'.yellow);
+    return updatePlaces(fireUp);
   }
-} else {
-  help = parser.help({
-    helpincludeEnv: true
-  }).trimRight();
-  console.log('usage: kamuran [OPTIONS]\n', 'options:\n', help);
-}
+})();
