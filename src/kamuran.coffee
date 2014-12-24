@@ -118,10 +118,10 @@ else if opts.question
   answers.forEach (answer) ->
     if answer.questions and typeof answer.questions is 'object' and answer.questions.indexOf(question) > -1
       found = true
-      do answer.answer opts.type
+      answer.answer opts.type
     else if answer.question and typeof answer.question is 'string' and answer.question is question
       found = true
-      do answer.answer opts.type
+      answer.answer opts.type
   if found is false
     do unknownResponse
 

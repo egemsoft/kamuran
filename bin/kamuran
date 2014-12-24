@@ -105,10 +105,10 @@ if (opts.version) {
   answers.forEach(function(answer) {
     if (answer.questions && typeof answer.questions === 'object' && answer.questions.indexOf(question) > -1) {
       found = true;
-      return answer.answer(opts.type)();
+      return answer.answer(opts.type);
     } else if (answer.question && typeof answer.question === 'string' && answer.question === question) {
       found = true;
-      return answer.answer(opts.type)();
+      return answer.answer(opts.type);
     }
   });
   if (found === false) {
