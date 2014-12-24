@@ -26,3 +26,11 @@ Ask a question (also supports type):
 ```bash
  $ kamuran -q "nereye gidelim?"
 ```
+
+## Update places cache
+
+Places are stored in a json file placed at `~/.kamuran/places.json`. It can be updated from this repo by running:
+
+```bash
+ $ kamuran --update
+```
